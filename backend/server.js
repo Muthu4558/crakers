@@ -10,7 +10,7 @@ const app = express();
 app.use(cors(
   process.env.NODE_ENV === 'production'
     ? { origin: process.env.FRONTEND_URL }
-    : { origin: 'http://localhost:3000' }
+    : { origin: 'https://crakers-frontend.onrender.com' }
 ));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
