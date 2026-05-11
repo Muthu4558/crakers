@@ -20,10 +20,10 @@ const AdminDashboard = () => {
   const fetchDashboardData = async () => {
     try {
       const [statsRes, chartRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/admin/dashboard/stats', {
+        axios.get(`${import.meta.env.VITE_APP_BASE_URL}/api/admin/dashboard/stats`, {
           headers: getAuthHeader(),
         }),
-        axios.get(`http://localhost:5000/api/admin/dashboard/sales-chart?filter=${filter}`, {
+        axios.get(`${import.meta.env.VITE_APP_BASE_URL}/api/admin/dashboard/sales-chart?filter=${filter}`, {
           headers: getAuthHeader(),
         }),
       ]);

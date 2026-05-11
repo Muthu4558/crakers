@@ -19,7 +19,7 @@ const Orders = () => {
   const fetchOrders = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/orders/user/my-orders",
+        `${import.meta.env.VITE_APP_BASE_URL}/api/orders/user/my-orders`,
         {
           headers: getAuthHeader(),
         },
@@ -46,7 +46,7 @@ const Orders = () => {
       if (result.isConfirmed) {
         try {
           await axios.put(
-            `http://localhost:5000/api/orders/${orderId}/cancel`,
+            `${import.meta.env.VITE_APP_BASE_URL}/api/orders/${orderId}/cancel`,
             {},
             { headers: getAuthHeader() },
           );

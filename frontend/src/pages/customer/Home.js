@@ -12,7 +12,7 @@ const Home = () => {
   useEffect(() => {
     const fetchCrackers = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/crackers?limit=8');
+        const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/api/crackers?limit=8`);
         setCrackers(response.data.crackers);
       } catch (error) {
         console.error('Error fetching crackers:', error);

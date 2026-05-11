@@ -36,7 +36,7 @@ const AdminOrders = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/orders", {
+      const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/api/orders`, {
         headers: getAuthHeader(),
       });
       setOrders(response.data.orders);
@@ -51,7 +51,7 @@ const AdminOrders = () => {
   const updateOrderStatus = async (orderId, status, paymentStatus) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/orders/${orderId}`,
+        `${import.meta.env.VITE_APP_BASE_URL}/api/orders/${orderId}`,
         { status, paymentStatus },
         { headers: getAuthHeader() },
       );

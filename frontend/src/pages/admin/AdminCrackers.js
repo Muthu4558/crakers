@@ -31,7 +31,7 @@ const AdminCrackers = () => {
 
   const fetchCrackers = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/crackers');
+      const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/api/crackers`);
       setCrackers(response.data.crackers);
     } catch (error) {
       console.error('Error fetching crackers:', error);
@@ -67,13 +67,13 @@ const AdminCrackers = () => {
 
       if (editingId) {
         await axios.put(
-          `http://localhost:5000/api/crackers/${editingId}`,
+          `${import.meta.env.VITE_APP_BASE_URL}/api/crackers/${editingId}`,
           data,
           { headers: { ...getAuthHeader(), 'Content-Type': 'multipart/form-data' } }
         );
         toast.success('Cracker updated successfully');
       } else {
-        await axios.post('http://localhost:5000/api/crackers', data, {
+        await axios.post(`${import.meta.env.VITE_APP_BASE_URL}/api/crackers`, data, {
           headers: { ...getAuthHeader(), 'Content-Type': 'multipart/form-data' },
         });
         toast.success('Cracker added successfully');
@@ -98,7 +98,7 @@ const AdminCrackers = () => {
 
   const handleEdit = (cracker) => {
     setFormData(cracker);
-    setImagePreview(cracker.image ? `http://localhost:5000${cracker.image}` : '');
+    setImagePreview(cracker.image ? `${import.meta.env.VITE_APP_BASE_URL}${cracker.image}` : '');
     setEditingId(cracker._id);
     setShowForm(true);
   };
@@ -122,7 +122,7 @@ const AdminCrackers = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(`http://localhost:5000/api/crackers/${id}`, {
+          await axios.delete(`${import.meta.env.VITE_APP_BASE_URL}/api/crackers/${id}`, {
             headers: getAuthHeader(),
           });
           toast.success('Cracker deleted successfully');
