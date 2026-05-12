@@ -1,4 +1,7 @@
 import { create } from "zustand";
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_APP_BASE_URL;
 
 const getStoredUser = () => {
   try {
@@ -42,43 +45,79 @@ export const useAuthStore = create((set) => ({
   user: getStoredUser(),
   token: getStoredToken(),
 
-  login: (userData, token) => {
+  login: async (email, password) => {
     try {
-      localStorage.setItem("user", JSON.stringify(userData));
+      const response = await axios.post(
+        `${API_URL}/api/auth/login`,
+        {
+          email,
+          password,
+        }
+      );
+
+      const user = response.data.user;
+      const token = response.data.token;
+
+      localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("token", token);
 
       set({
-        user: userData,
+        user,
         token,
       });
+
+      return response.data;
     } catch (error) {
-      console.error("Login error:", error);
+      throw new Error(
+        error.response?.data?.message || "Login failed"
+      );
+    }
+  },
+
+  adminLogin: async (email, password) => {
+    try {
+      const response = await axios.post(
+        `${API_URL}/api/auth/admin/login`,
+        {
+          email,
+          password,
+        }
+      );
+
+      const user = response.data.user;
+      const token = response.data.token;
+
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", token);
+
+      set({
+        user,
+        token,
+      });
+
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.message || "Admin login failed"
+      );
     }
   },
 
   logout: () => {
-    try {
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
 
-      set({
-        user: null,
-        token: null,
-      });
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
+    set({
+      user: null,
+      token: null,
+    });
   },
 
   updateUser: (updatedUser) => {
-    try {
-      localStorage.setItem("user", JSON.stringify(updatedUser));
+    localStorage.setItem("user", JSON.stringify(updatedUser));
 
-      set({
-        user: updatedUser,
-      });
-    } catch (error) {
-      console.error("Update user error:", error);
-    }
+    set({
+      user: updatedUser,
+    });
   },
 }));
