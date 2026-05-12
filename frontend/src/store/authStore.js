@@ -1,102 +1,84 @@
-import { create } from 'zustand';
-import axios from 'axios';
+import { create } from "zustand";
 
-const API_URL = process.env.VITE_APP_BASE_URL;
+const getStoredUser = () => {
+  try {
+    const storedUser = localStorage.getItem("user");
+
+    if (
+      !storedUser ||
+      storedUser === "undefined" ||
+      storedUser === "null"
+    ) {
+      return null;
+    }
+
+    return JSON.parse(storedUser);
+  } catch (error) {
+    console.error("Error parsing stored user:", error);
+    return null;
+  }
+};
+
+const getStoredToken = () => {
+  try {
+    const storedToken = localStorage.getItem("token");
+
+    if (
+      !storedToken ||
+      storedToken === "undefined" ||
+      storedToken === "null"
+    ) {
+      return null;
+    }
+
+    return storedToken;
+  } catch (error) {
+    console.error("Error getting stored token:", error);
+    return null;
+  }
+};
 
 export const useAuthStore = create((set) => ({
-  user: JSON.parse(localStorage.getItem('user')) || null,
-  token: localStorage.getItem('token') || null,
-  isLoading: false,
+  user: getStoredUser(),
+  token: getStoredToken(),
 
-  register: async (name, email, password, confirmPassword) => {
-    set({ isLoading: true });
+  login: (userData, token) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/register`, {
-        name,
-        email,
-        password,
-        confirmPassword,
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("token", token);
+
+      set({
+        user: userData,
+        token,
       });
-
-      const { token, user } = response.data;
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-
-      set({ user, token, isLoading: false });
-      return response.data;
     } catch (error) {
-      set({ isLoading: false });
-      throw error.response?.data?.message || 'Registration failed';
-    }
-  },
-
-  login: async (email, password) => {
-    set({ isLoading: true });
-    try {
-      const response = await axios.post(`${API_URL}/auth/login`, {
-        email,
-        password,
-      });
-
-      const { token, user } = response.data;
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-
-      set({ user, token, isLoading: false });
-      return response.data;
-    } catch (error) {
-      set({ isLoading: false });
-      throw error.response?.data?.message || 'Login failed';
-    }
-  },
-
-  adminLogin: async (email, password) => {
-    set({ isLoading: true });
-    try {
-      const response = await axios.post(`${API_URL}/admin/login`, {
-        email,
-        password,
-      });
-
-      const { token, user } = response.data;
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-
-      set({ user, token, isLoading: false });
-      return response.data;
-    } catch (error) {
-      set({ isLoading: false });
-      throw error.response?.data?.message || 'Admin login failed';
+      console.error("Login error:", error);
     }
   },
 
   logout: () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('cart');
-    set({ user: null, token: null });
-  },
-
-  updateProfile: async (profileData) => {
-    set({ isLoading: true });
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.put(`${API_URL}/auth/profile`, profileData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
 
-      const { user } = response.data;
-      localStorage.setItem('user', JSON.stringify(user));
-      set({ user, isLoading: false });
-      return response.data;
+      set({
+        user: null,
+        token: null,
+      });
     } catch (error) {
-      set({ isLoading: false });
-      throw error.response?.data?.message || 'Update failed';
+      console.error("Logout error:", error);
     }
   },
 
-  getAuthHeader: () => {
-    const token = localStorage.getItem('token');
-    return token ? { Authorization: `Bearer ${token}` } : {};
+  updateUser: (updatedUser) => {
+    try {
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+
+      set({
+        user: updatedUser,
+      });
+    } catch (error) {
+      console.error("Update user error:", error);
+    }
   },
 }));
