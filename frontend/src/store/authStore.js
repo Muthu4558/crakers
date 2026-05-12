@@ -11,7 +11,7 @@ export const useAuthStore = create((set) => ({
   register: async (name, email, password, confirmPassword) => {
     set({ isLoading: true });
     try {
-      const response = await axios.post(`${API_URL}/auth/register`, {
+      const response = await axios.post(`${API_URL}/api/auth/register`, {
         name,
         email,
         password,
@@ -33,7 +33,7 @@ export const useAuthStore = create((set) => ({
   login: async (email, password) => {
     set({ isLoading: true });
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, {
+      const response = await axios.post(`${API_URL}/api/auth/login`, {
         email,
         password,
       });
@@ -53,7 +53,7 @@ export const useAuthStore = create((set) => ({
   adminLogin: async (email, password) => {
     set({ isLoading: true });
     try {
-      const response = await axios.post(`${API_URL}/admin/login`, {
+      const response = await axios.post(`${API_URL}/api/admin/login`, {
         email,
         password,
       });
@@ -81,7 +81,7 @@ export const useAuthStore = create((set) => ({
     set({ isLoading: true });
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put(`${API_URL}/auth/profile`, profileData, {
+      const response = await axios.put(`${API_URL}/api/auth/profile`, profileData, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
