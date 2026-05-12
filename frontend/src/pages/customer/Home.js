@@ -13,7 +13,9 @@ const Home = () => {
     const fetchCrackers = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/api/crackers?limit=8`);
-        setCrackers(response.data.crackers);
+        setCrackers(Array.isArray(response.data.crackers) 
+  ? response.data.crackers 
+  : []);
       } catch (error) {
         console.error('Error fetching crackers:', error);
       } finally {
@@ -77,7 +79,8 @@ const Home = () => {
             <LoadingSpinner />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {crackers.slice(0, 8).map((cracker) => (
+              {Array.isArray(crackers) &&
+  crackers.slice(0, 8).map((cracker) => (
                 <CrackerCard key={cracker._id} cracker={cracker} />
               ))}
             </div>
