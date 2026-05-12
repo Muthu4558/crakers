@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import axios from 'axios';
 
-const API_URL = process.env.VITE_APP_BASE_URL || 'http://localhost:5000/api';
+const API_URL = process.env.VITE_APP_BASE_URL;
 
 export const useAuthStore = create((set) => ({
   user: JSON.parse(localStorage.getItem('user')) || null,
