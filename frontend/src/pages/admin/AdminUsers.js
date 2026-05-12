@@ -17,7 +17,7 @@ const AdminUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/api/admin/users`, {
+      const response = await axios.get(`${import.meta.env.REACT_APP_BASE_URL}/api/admin/users`, {
         headers: getAuthHeader(),
       });
       setUsers(response.data.users || response.data);
@@ -33,7 +33,7 @@ const AdminUsers = () => {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
 
     try {
-      await axios.delete(`${import.meta.env.VITE_APP_BASE_URL}/api/admin/users/${userId}`, {
+      await axios.delete(`${import.meta.env.REACT_APP_BASE_URL}/api/admin/users/${userId}`, {
         headers: getAuthHeader(),
       });
       toast.success('User deleted successfully');

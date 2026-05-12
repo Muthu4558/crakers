@@ -448,7 +448,7 @@ const Checkout = () => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/api/orders`,
+        `${import.meta.env.REACT_APP_BASE_URL}/api/orders`,
         {
           items: cart.map((i) => ({ crackerId: i._id, quantity: i.quantity })),
           shippingAddress: {
@@ -488,7 +488,7 @@ const Checkout = () => {
     const data = pendingFormData;
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/api/orders/verify-payment`,
+        `${import.meta.env.REACT_APP_BASE_URL}/api/orders/verify-payment`,
         {
           razorpayOrderId: fakeOrderId,
           razorpayPaymentId: fakePaymentId,

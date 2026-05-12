@@ -18,7 +18,7 @@ const CrackerDetail = () => {
   useEffect(() => {
     const fetchCracker = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/api/crackers/${id}`);
+        const response = await axios.get(`${import.meta.env.REACT_APP_BASE_URL}/api/crackers/${id}`);
         setCracker(response.data.cracker);
       } catch (error) {
         console.error('Error fetching cracker:', error);

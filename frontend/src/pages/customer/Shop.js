@@ -15,7 +15,7 @@ const Shop = () => {
     const fetchCrackers = async () => {
       try {
         setIsLoading(true);
-        let url = `${import.meta.env.VITE_APP_BASE_URL}/api/crackers`;
+        let url = `${import.meta.env.REACT_APP_BASE_URL}/api/crackers`;
         const params = [];
 
         if (selectedCategory) {

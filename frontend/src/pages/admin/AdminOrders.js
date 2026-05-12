@@ -51,7 +51,7 @@ const AdminOrders = () => {
   const updateOrderStatus = async (orderId, status, paymentStatus) => {
     try {
       await axios.put(
-        `${import.meta.env.VITE_APP_BASE_URL}/api/orders/${orderId}`,
+        `${import.meta.env.REACT_APP_BASE_URL}/api/orders/${orderId}`,
         { status, paymentStatus },
         { headers: getAuthHeader() },
       );
