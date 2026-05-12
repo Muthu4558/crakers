@@ -7,11 +7,13 @@ const path = require('path');
 const app = express();
 
 // Middleware
-app.use(cors(
-  process.env.NODE_ENV === 'production'
-    ? { origin: process.env.FRONTEND_URL }
-    : { origin: 'https://crakers-frontend.onrender.com' }
-));
+app.use(cors({
+  origin:
+    process.env.NODE_ENV === 'production'
+      ? process.env.FRONTEND_URL
+      : 'http://localhost:5173',
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
